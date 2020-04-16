@@ -1,6 +1,9 @@
 package com.spring.springbatch.config;
 
+import com.spring.springbatch.UserDTO;
+import com.spring.springbatch.model.Department;
 import com.spring.springbatch.model.User;
+import com.spring.springbatch.repository.DepartmentRepository;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -15,13 +18,13 @@ import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.*;
 import org.springframework.core.io.FileSystemResource;
 
 @Configuration
 @EnableBatchProcessing
 public class SpringBatchConfig {
+
     @Bean
     public Job job(JobBuilderFactory jobBuilderFactory,
                    StepBuilderFactory stepBuilderFactory,
@@ -29,7 +32,6 @@ public class SpringBatchConfig {
                    ItemProcessor<User, User> process,
                    ItemWriter<User> writer
     ) {
-
         Step step = stepBuilderFactory.get("user-insertion")
                 .<User, User>chunk(100000)
                 .reader(reader)
@@ -44,7 +46,7 @@ public class SpringBatchConfig {
     }
 
     @Bean
-    public FlatFileItemReader<User> itemReader() {
+    public FlatFileItemReader<User> itemReader() throws Exception {
         FlatFileItemReader<User> flatFileItemReader = new FlatFileItemReader<>();
         flatFileItemReader.setResource(new FileSystemResource("src/main/resources/users.csv"));
         flatFileItemReader.setName("CSV-Reader");
