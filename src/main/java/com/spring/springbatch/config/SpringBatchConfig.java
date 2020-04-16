@@ -1,9 +1,6 @@
 package com.spring.springbatch.config;
 
-import com.spring.springbatch.UserDTO;
-import com.spring.springbatch.model.Department;
 import com.spring.springbatch.model.User;
-import com.spring.springbatch.repository.DepartmentRepository;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -46,7 +43,7 @@ public class SpringBatchConfig {
     }
 
     @Bean
-    public FlatFileItemReader<User> itemReader() throws Exception {
+    public FlatFileItemReader<User> itemReader() {
         FlatFileItemReader<User> flatFileItemReader = new FlatFileItemReader<>();
         flatFileItemReader.setResource(new FileSystemResource("src/main/resources/users.csv"));
         flatFileItemReader.setName("CSV-Reader");
